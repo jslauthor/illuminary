@@ -1,8 +1,9 @@
 #include "nlpparser.h"
 
-NLPParser::NLPParser(QObject *parent) : QObject(parent)
+NLPParser::NLPParser()
 {
   // set freeling locale to an UTF8 compatible locale
+  // This is super important to call before instantiating the rest
   util::init_locale(L"default");
 
   tk = new tokenizer(QString(freeling_path + "tokenizer.dat").toStdWString());
@@ -51,21 +52,13 @@ NLPParser::~NLPParser() {
   delete dep;
 }
 
-void NLPParser::loadFile(const QString& filename) {
-
+list<sentence> NLPParser::parse(wstring const &text) {
   list<word> lw;
   list<sentence> ls;
 
-  QFile file(QUrl(filename).toLocalFile());
-  if (!file.open(QIODevice::ReadOnly)) {
-    qWarning("%s", file.errorString().toStdString().c_str());
-  }
-
   sid = sp->open_session();
-  QTextStream in(&file);
 
-  QString text = in.readAll();
-  lw = tk->tokenize(text.toStdWString());
+  lw = tk->tokenize(text);
   ls = sp->split(sid, lw, false);
   morfo->analyze(ls);
   tagger->analyze(ls);
@@ -74,7 +67,8 @@ void NLPParser::loadFile(const QString& filename) {
   np->analyze(ls);
 
   sp->close_session(sid);
-  file.close();
+
+  return ls;
 }
 
 void NLPParser::PrintMorfo(list<sentence> &ls) const {

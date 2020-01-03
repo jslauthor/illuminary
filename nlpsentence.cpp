@@ -8,14 +8,15 @@ NLPSentence::NLPSentence(QObject *parent) : QObject(parent)
 QQmlListProperty<NLPWord> NLPSentence::words()
 {
     return {this, this,
-             &NLPSentence::appendWord,
+//             &NLPSentence::appendWord,
              &NLPSentence::wordCount,
              &NLPSentence::word,
-             &NLPSentence::clearWords};
+//             &NLPSentence::clearWords
+    };
 }
 
 void NLPSentence::appendWord(NLPWord *word) {
-  m_words.append(word);
+  m_words.append(std::move(word));
 }
 
 int NLPSentence::wordCount() const {

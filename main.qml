@@ -21,7 +21,7 @@ Window {
         folder: shortcuts.home
         onAccepted: {
             console.log("You chose: " + fileDialog.fileUrls)
-            NLPParser.loadFile(fileDialog.fileUrls)
+            AppState.loadFile(fileDialog.fileUrls)
         }
         onRejected: {
             console.log("Canceled")
@@ -31,6 +31,21 @@ Window {
     Button {
         text: "Select document"
         onClicked: fileDialog.open()
+    }
+
+    Row {
+        Repeater {
+            model: AppState.sentences
+            Repeater {
+                model: modelData.words
+                onChildrenChanged: console.log('hello')
+                Text {
+                    text: "hello"
+                    font.family: "Arial"
+                    font.pixelSize: 13
+                }
+            }
+        }
     }
 
 }

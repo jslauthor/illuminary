@@ -14,6 +14,7 @@ class NLPWord : public QObject
 {
   Q_OBJECT
   Q_PROPERTY(PartOfSpeech pos READ pos)
+  Q_PROPERTY(QString word READ word)
 public:
   explicit NLPWord(QObject *parent = nullptr);
 
@@ -37,6 +38,7 @@ public:
   Q_ENUM(PartOfSpeech)
 
   PartOfSpeech pos();
+  QString word();
 
   void parseWord(const freeling::word word); // create copy parse and store it
 
@@ -44,6 +46,7 @@ Q_SIGNALS:
 
 protected:
   PartOfSpeech m_pos;
+  QString m_form;
   freeling::word m_word;
   static PartOfSpeechMapping m_posMap;
 };

@@ -1,37 +1,25 @@
 #ifndef NLPPARSER_H
 #define NLPPARSER_H
 
-#include <QObject>
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <QUrl>
-#include <QQmlListProperty>
-
 #include "freeling.h"
+#include <QString>
+
 using namespace freeling;
 
 /*
  * The Freeling parser
  **/
-class NLPParser : public QObject
+class NLPParser
 {
-
-  Q_OBJECT
-
 public:
 
-  explicit NLPParser(QObject *parent = nullptr);
-  ~NLPParser() override;
+  NLPParser();
+  ~NLPParser();
 
-  Q_INVOKABLE void loadFile(const QString&);
+  list<sentence> parse(wstring const &text);
 
   // For debugging purposes
   void PrintMorfo(list<sentence> &ls) const;
-
-Q_SIGNALS:
-
-
 
 protected:
 
