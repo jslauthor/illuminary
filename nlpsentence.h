@@ -2,32 +2,34 @@
 #define NLPSENTENCE_H
 
 #include <QObject>
-#include <QQmlListProperty>
+#include <QAbstractListModel>
 #include <QVector>
 #include "nlpword.h"
 
-
-class NLPSentence : public QObject
+class NLPSentenceModel : public QAbstractListModel
 {
   Q_OBJECT
-  Q_PROPERTY(QQmlListProperty<NLPWord> words READ words)
 public:
-  explicit NLPSentence(QObject *parent = nullptr);
+  enum NLPWordRoles {
+    WordRole = Qt::UserRole + 1,
+    POSRole
+  };
 
-  void appendWord(NLPWord *word);
-  int wordCount() const;
-  NLPWord *word(int) const;
-  void clearWords();
+  explicit NLPSentenceModel(QObject *parent = nullptr);
+  ~NLPSentenceModel();
+  NLPSentenceModel(const NLPSentenceModel &other) {
+    m_words = other.m_words;
+  }
 
-  QQmlListProperty<NLPWord> words();
+  int rowCount(const QModelIndex &parent = QModelIndex()) const;
+  QVariant data(const QModelIndex &index, int role) const;
+  void addWord(NLPWord const &word);
 Q_SIGNALS:
 protected:
-  static void appendWord(QQmlListProperty<NLPWord>*, NLPWord*);
-  static int wordCount(QQmlListProperty<NLPWord>*);
-  static NLPWord* word(QQmlListProperty<NLPWord>*, int);
-  static void clearWords(QQmlListProperty<NLPWord>*);
-
-  QVector<NLPWord*> m_words;
+  QList<NLPWord> m_words;
+  QHash<int, QByteArray> roleNames() const;
 };
+
+Q_DECLARE_METATYPE(NLPSentenceModel)
 
 #endif // NLPSENTENCE_H

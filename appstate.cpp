@@ -7,6 +7,11 @@ AppState::AppState()
 
 AppState::~AppState() {
   delete m_parser;
+  delete m_sentences;
+}
+
+NLPSentenceModel* AppState::sentences() const {
+  return m_sentences;
 }
 
 void AppState::loadFile(const QString& filename) {
@@ -19,62 +24,24 @@ void AppState::loadFile(const QString& filename) {
 
   list<freeling::sentence> sentences = m_parser->parse(text.toStdWString());
 
-  clearSentences();
+  if (m_sentences) {
+    delete m_sentences;
+    m_sentences = nullptr;
+  }
 
-  // Naive copy to NLPSentence/NLPWord
+  m_sentences = new NLPSentenceModel(this);
   sentence::const_iterator word;
   for (list<freeling::sentence>::iterator is = sentences.begin(); is != sentences.end(); is++) {
-    NLPSentence nlpsentence;
+    NLPSentenceModel nlpsentence;
     for (word = is->begin(); word != is->end(); word++) {
       NLPWord nlpword;
       nlpword.parseWord(*word);
-      nlpsentence.appendWord(&nlpword);
+      m_sentences->addWord(nlpword);
     }
-    appendSentence(&nlpsentence);
   }
 
   file.close();
   Q_EMIT sentencesChanged();
 }
 
-QQmlListProperty<NLPSentence> AppState::sentences()
-{
-    return {this, this,
-//             &AppState::appendSentence,
-             &AppState::sentenceCount,
-             &AppState::sentence,
-//             &AppState::clearSentences
-    };
-}
 
-void AppState::appendSentence(NLPSentence *sentence) {
-  m_sentences.append(std::move(sentence));
-}
-
-int AppState::sentenceCount() const {
-  return m_sentences.count();
-}
-
-NLPSentence *AppState::sentence(int index) const {
-  return m_sentences.at(index);
-}
-
-void AppState::clearSentences() {
-  m_sentences.clear();
-}
-
-void AppState::appendSentence(QQmlListProperty<NLPSentence>* list, NLPSentence* sentence) {
-  reinterpret_cast<AppState*>(list->data)->appendSentence(sentence);
-}
-
-int AppState::sentenceCount(QQmlListProperty<NLPSentence>* list) {
-  return reinterpret_cast<AppState*>(list->data)->sentenceCount();
-}
-
-NLPSentence* AppState::sentence(QQmlListProperty<NLPSentence>* list, int index) {
-  return reinterpret_cast<AppState*>(list->data)->sentence(index);
-}
-
-void AppState::clearSentences(QQmlListProperty<NLPSentence>* list) {
-  reinterpret_cast<AppState*>(list->data)->clearSentences();
-}

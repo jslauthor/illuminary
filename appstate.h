@@ -6,8 +6,9 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QUrl>
-#include <QQmlListProperty>
+#include <QAbstractListModel>
 #include "nlpparser.h"
+#include "nlpsentences.h"
 #include "nlpsentence.h"
 
 #include "freeling.h"
@@ -16,30 +17,20 @@ using namespace freeling;
 class AppState : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QQmlListProperty<NLPSentence> sentences READ sentences NOTIFY sentencesChanged)
+  Q_PROPERTY(NLPSentenceModel* sentence READ sentences NOTIFY sentencesChanged CONSTANT)
 public:
   AppState();
   ~AppState() override;
   Q_INVOKABLE void loadFile(const QString&);
 
-  void appendSentence(NLPSentence *sentence);
-  int sentenceCount() const;
-  NLPSentence *sentence(int) const;
-  void clearSentences();
-
-  QQmlListProperty<NLPSentence> sentences();
+  NLPSentenceModel* sentences() const;
 
 Q_SIGNALS:
   void sentencesChanged();
 
 protected:
   NLPParser *m_parser;
-  QVector<NLPSentence*> m_sentences;
-
-  static void appendSentence(QQmlListProperty<NLPSentence>*, NLPSentence*);
-  static int sentenceCount(QQmlListProperty<NLPSentence>*);
-  static NLPSentence* sentence(QQmlListProperty<NLPSentence>*, int);
-  static void clearSentences(QQmlListProperty<NLPSentence>*);
+  NLPSentenceModel* m_sentences = nullptr;
 };
 
 #endif // APPSTATE_H

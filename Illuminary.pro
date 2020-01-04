@@ -16,6 +16,7 @@ SOURCES += main.cpp \
   appstate.cpp \
   nlpparser.cpp \
   nlpsentence.cpp \
+  nlpsentences.cpp \
   nlpword.cpp
 
 RESOURCES += qml.qrc
@@ -35,6 +36,7 @@ HEADERS += \
   appstate.h \
   nlpparser.h \
   nlpsentence.h \
+  nlpsentences.h \
   nlpword.h
 
 INCLUDEPATH += /usr/local/include/boost_1_71_0/include/ \

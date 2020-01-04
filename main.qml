@@ -3,6 +3,9 @@ import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.3
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+
+import NLP 1.0
 
 Window {
 
@@ -28,21 +31,25 @@ Window {
         }
     }
 
-    Button {
-        text: "Select document"
-        onClicked: fileDialog.open()
-    }
-
-    Row {
-        Repeater {
-            model: AppState.sentences
+    RowLayout {
+        anchors.fill: parent
+        Layout.alignment: Qt.AlignCenter
+        Button {
+            text: "Select document"
+            onClicked: fileDialog.open()
+        }
+        Flow {
+            Layout.fillWidth: true
+            Layout.margins: 20
+            spacing: 5
             Repeater {
-                model: modelData.words
-                onChildrenChanged: console.log('hello')
-                Text {
-                    text: "hello"
-                    font.family: "Arial"
-                    font.pixelSize: 13
+                model: AppState.sentence
+                Row {
+                    Text {
+                        text: word
+                        font.family: "Arial"
+                        font.pixelSize: 13
+                    }
                 }
             }
         }

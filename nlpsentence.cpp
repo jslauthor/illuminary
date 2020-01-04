@@ -1,48 +1,42 @@
 #include "nlpsentence.h"
 
-NLPSentence::NLPSentence(QObject *parent) : QObject(parent)
+NLPSentenceModel::NLPSentenceModel(QObject *parent) : QAbstractListModel(parent)
 {
 
 }
 
-QQmlListProperty<NLPWord> NLPSentence::words()
-{
-    return {this, this,
-//             &NLPSentence::appendWord,
-             &NLPSentence::wordCount,
-             &NLPSentence::word,
-//             &NLPSentence::clearWords
-    };
+NLPSentenceModel::~NLPSentenceModel() {
+
 }
 
-void NLPSentence::appendWord(NLPWord *word) {
-  m_words.append(std::move(word));
-}
-
-int NLPSentence::wordCount() const {
+int NLPSentenceModel::rowCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
   return m_words.count();
 }
 
-NLPWord *NLPSentence::word(int index) const {
-  return m_words.at(index);
+QVariant NLPSentenceModel::data(const QModelIndex &index, int role) const {
+  if (index.row() < 0 || index.row() >= m_words.count())
+      return QVariant();
+
+  const NLPWord &word = m_words[index.row()];
+  if (role == WordRole)
+      return word.word();
+  else if (role == POSRole)
+      return word.pos();
+
+  return QVariant();
 }
 
-void NLPSentence::clearWords() {
-  m_words.clear();
+void NLPSentenceModel::addWord(NLPWord const &word) {
+  beginInsertRows(QModelIndex(), rowCount(), rowCount());
+  m_words.push_back(word);
+  endInsertRows();
 }
 
-void NLPSentence::appendWord(QQmlListProperty<NLPWord>* list, NLPWord* word) {
-  reinterpret_cast<NLPSentence*>(list->data)->appendWord(word);
+QHash<int, QByteArray> NLPSentenceModel::roleNames() const {
+  QHash<int, QByteArray> roles;
+  roles[WordRole] = "word";
+  roles[POSRole] = "pos";
+  return roles;
 }
 
-int NLPSentence::wordCount(QQmlListProperty<NLPWord>* list) {
-  return reinterpret_cast<NLPSentence*>(list->data)->wordCount();
-}
-
-NLPWord* NLPSentence::word(QQmlListProperty<NLPWord>* list, int index) {
-  return reinterpret_cast<NLPSentence*>(list->data)->word(index);
-}
-
-void NLPSentence::clearWords(QQmlListProperty<NLPWord>* list) {
-  reinterpret_cast<NLPSentence*>(list->data)->clearWords();
-}

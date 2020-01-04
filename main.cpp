@@ -5,6 +5,7 @@
 
 #include "appstate.h"
 #include "nlpsentence.h"
+#include "nlpsentences.h"
 #include "nlpword.h"
 
 int main(int argc, char *argv[])
@@ -12,8 +13,9 @@ int main(int argc, char *argv[])
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QGuiApplication app(argc, argv);
 
-  qmlRegisterType<NLPWord>("NLP", 1,0, "Word");
-  qmlRegisterType<NLPSentence>("NLP", 1,0, "Sentence");
+  qmlRegisterUncreatableType<NLPPartOfSpeech>("NLP", 1,0, "PartOfSpeech", "Not creatable - for enums only");
+//  qmlRegisterType<NLPSentenceModel>("NLP", 1,0, "Sentence");
+//  qmlRegisterType<NLPSentencesModel>("NLP", 1,0, "Sentences");
   AppState appState;
 
   QQmlApplicationEngine engine;
