@@ -14,15 +14,24 @@ NLPSentenceModel* AppState::sentences() const {
   return m_sentences;
 }
 
+QString AppState::corpus() const {
+  return m_corpus;
+}
+
+void AppState::setCorpus(const QString &corpus) {
+  m_corpus = corpus;
+  Q_EMIT corpusChanged();
+}
+
 void AppState::loadFile(const QString& filename) {
   QFile file(QUrl(filename).toLocalFile());
   if (!file.open(QIODevice::ReadOnly)) {
     qWarning("%s", file.errorString().toStdString().c_str());
   }
   QTextStream in(&file);
-  QString text = in.readAll();
+  setCorpus(in.readAll());
 
-  list<freeling::sentence> sentences = m_parser->parse(text.toStdWString());
+  list<freeling::sentence> sentences = m_parser->parse(m_corpus.toStdWString());
 
   if (m_sentences) {
     delete m_sentences;

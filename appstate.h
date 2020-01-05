@@ -8,7 +8,6 @@
 #include <QUrl>
 #include <QAbstractListModel>
 #include "nlpparser.h"
-#include "nlpsentences.h"
 #include "nlpsentence.h"
 
 #include "freeling.h"
@@ -18,6 +17,7 @@ class AppState : public QObject
 {
   Q_OBJECT
   Q_PROPERTY(NLPSentenceModel* sentence READ sentences NOTIFY sentencesChanged CONSTANT)
+  Q_PROPERTY(QString corpus READ corpus WRITE setCorpus NOTIFY corpusChanged)
 public:
   AppState();
   ~AppState() override;
@@ -25,12 +25,17 @@ public:
 
   NLPSentenceModel* sentences() const;
 
+  QString corpus() const;
+  void setCorpus(const QString&);
+
 Q_SIGNALS:
   void sentencesChanged();
+  void corpusChanged();
 
 protected:
   NLPParser *m_parser;
   NLPSentenceModel* m_sentences = nullptr;
+  QString m_corpus;
 };
 
 #endif // APPSTATE_H

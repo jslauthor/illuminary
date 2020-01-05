@@ -5,7 +5,6 @@
 
 #include "appstate.h"
 #include "nlpsentence.h"
-#include "nlpsentences.h"
 #include "nlpword.h"
 
 int main(int argc, char *argv[])
