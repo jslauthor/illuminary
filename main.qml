@@ -14,8 +14,8 @@ Window {
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
-    width: 640
-    height: 480
+    width: 1024
+    height: 768
     title: qsTr("Illuminary")
 
     FileDialog {
@@ -33,22 +33,30 @@ Window {
 
     RowLayout {
         anchors.fill: parent
-        Layout.alignment: Qt.AlignCenter
         Button {
+            Layout.alignment: Qt.AlignTop
             text: "Select document"
             onClicked: fileDialog.open()
         }
-        Flow {
+        ColumnLayout {
+            Layout.alignment: Qt.AlignCenter
+            Layout.fillHeight: true
             Layout.fillWidth: true
-            Layout.margins: 20
-            spacing: 5
-            Repeater {
-                model: AppState.sentence
-                Row {
-                    Text {
-                        text: word
-                        font.family: "Arial"
-                        font.pixelSize: 13
+            Text {
+                Layout.fillWidth: true
+                text: AppState.corpus
+                wrapMode: Text.Wrap
+            }
+            Flow {
+                Layout.fillWidth: true
+                Layout.margins: 20
+                spacing: 1
+                Repeater {
+                    model: AppState.sentences
+                    Rectangle {
+                        width: 1
+                        height: 10
+                        color: "black"
                     }
                 }
             }

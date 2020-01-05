@@ -16,7 +16,7 @@ using namespace freeling;
 class AppState : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(NLPSentenceModel* sentence READ sentences NOTIFY sentencesChanged CONSTANT)
+  Q_PROPERTY(NLPSentenceModel* sentences READ sentences NOTIFY sentencesChanged CONSTANT)
   Q_PROPERTY(QString corpus READ corpus WRITE setCorpus NOTIFY corpusChanged)
 public:
   AppState();
