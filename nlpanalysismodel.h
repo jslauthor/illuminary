@@ -6,7 +6,7 @@
 #include <QVector>
 #include "nlpword.h"
 
-class NLPSentenceModel : public QAbstractListModel
+class NLPAnalysisModel : public QAbstractListModel
 {
   Q_OBJECT
 public:
@@ -15,9 +15,9 @@ public:
     POSRole
   };
 
-  explicit NLPSentenceModel(QObject *parent = nullptr);
-  ~NLPSentenceModel();
-  NLPSentenceModel(const NLPSentenceModel &other) {
+  explicit NLPAnalysisModel(QObject *parent = nullptr);
+  ~NLPAnalysisModel();
+  NLPAnalysisModel(const NLPAnalysisModel &other) {
     m_words = other.m_words;
   }
 
@@ -30,6 +30,6 @@ protected:
   QHash<int, QByteArray> roleNames() const;
 };
 
-Q_DECLARE_METATYPE(NLPSentenceModel)
+Q_DECLARE_METATYPE(NLPAnalysisModel)
 
 #endif // NLPSENTENCE_H

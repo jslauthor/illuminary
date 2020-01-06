@@ -14,8 +14,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
   appstate.cpp \
+  colormodel.cpp \
+  nlpanalysismodel.cpp \
   nlpparser.cpp \
-  nlpsentence.cpp \
   nlpword.cpp
 
 RESOURCES += qml.qrc
@@ -33,8 +34,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
   appstate.h \
+  colormodel.h \
+  nlpanalysismodel.h \
   nlpparser.h \
-  nlpsentence.h \
   nlpword.h
 
 INCLUDEPATH += /usr/local/include/boost_1_71_0/include/ \

@@ -1,20 +1,20 @@
-#include "nlpsentence.h"
+#include "nlpanalysismodel.h"
 
-NLPSentenceModel::NLPSentenceModel(QObject *parent) : QAbstractListModel(parent)
+NLPAnalysisModel::NLPAnalysisModel(QObject *parent) : QAbstractListModel(parent)
 {
 
 }
 
-NLPSentenceModel::~NLPSentenceModel() {
+NLPAnalysisModel::~NLPAnalysisModel() {
 
 }
 
-int NLPSentenceModel::rowCount(const QModelIndex &parent) const {
+int NLPAnalysisModel::rowCount(const QModelIndex &parent) const {
   Q_UNUSED(parent)
   return m_words.count();
 }
 
-QVariant NLPSentenceModel::data(const QModelIndex &index, int role) const {
+QVariant NLPAnalysisModel::data(const QModelIndex &index, int role) const {
   if (index.row() < 0 || index.row() >= m_words.count())
       return QVariant();
 
@@ -27,13 +27,13 @@ QVariant NLPSentenceModel::data(const QModelIndex &index, int role) const {
   return QVariant();
 }
 
-void NLPSentenceModel::addWord(NLPWord const &word) {
+void NLPAnalysisModel::addWord(NLPWord const &word) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
   m_words.push_back(word);
   endInsertRows();
 }
 
-QHash<int, QByteArray> NLPSentenceModel::roleNames() const {
+QHash<int, QByteArray> NLPAnalysisModel::roleNames() const {
   QHash<int, QByteArray> roles;
   roles[WordRole] = "word";
   roles[POSRole] = "pos";

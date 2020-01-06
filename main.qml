@@ -1,3 +1,4 @@
+import QtQml.Models 2.12
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Dialogs 1.3
@@ -33,11 +34,27 @@ Window {
 
     RowLayout {
         anchors.fill: parent
-        Button {
+        ColumnLayout {
             Layout.alignment: Qt.AlignTop
-            text: "Select document"
-            onClicked: fileDialog.open()
+            Layout.fillHeight: true
+            Button {
+                Layout.alignment: Qt.AlignTop
+                text: "Select document"
+                onClicked: fileDialog.open()
+            }
+
+            Repeater {
+                model: AppState.colors
+                Rectangle {
+                    width: 20
+                    height: 20
+                    color: model.color
+                }
+            }
+
         }
+
+
         ColumnLayout {
             Layout.alignment: Qt.AlignCenter
             Layout.fillHeight: true
@@ -52,7 +69,7 @@ Window {
                 Layout.margins: 20
                 spacing: 1
                 Repeater {
-                    model: AppState.sentences
+                    model: AppState.analysis
                     Rectangle {
                         width: 1
                         height: 10

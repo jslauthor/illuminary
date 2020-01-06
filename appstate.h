@@ -8,7 +8,8 @@
 #include <QUrl>
 #include <QAbstractListModel>
 #include "nlpparser.h"
-#include "nlpsentence.h"
+#include "nlpanalysismodel.h"
+#include "colormodel.h"
 
 #include "freeling.h"
 using namespace freeling;
@@ -16,25 +17,29 @@ using namespace freeling;
 class AppState : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(NLPSentenceModel* sentences READ sentences NOTIFY sentencesChanged CONSTANT)
+  Q_PROPERTY(NLPAnalysisModel* analysis READ analysis NOTIFY analysisChanged)
+  Q_PROPERTY(ColorModel* colors READ colors NOTIFY colorsChanged)
   Q_PROPERTY(QString corpus READ corpus WRITE setCorpus NOTIFY corpusChanged)
 public:
   AppState();
   ~AppState() override;
   Q_INVOKABLE void loadFile(const QString&);
 
-  NLPSentenceModel* sentences() const;
+  NLPAnalysisModel* analysis() const;
+  ColorModel* colors() const;
 
   QString corpus() const;
   void setCorpus(const QString&);
 
 Q_SIGNALS:
-  void sentencesChanged();
+  void analysisChanged();
   void corpusChanged();
+  void colorsChanged();
 
 protected:
   NLPParser *m_parser;
-  NLPSentenceModel* m_sentences = nullptr;
+  NLPAnalysisModel *m_sentences = nullptr;
+  ColorModel *m_colors = nullptr;
   QString m_corpus;
 };
 

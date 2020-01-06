@@ -3,15 +3,21 @@
 AppState::AppState()
 {
   m_parser = new NLPParser();
+  m_colors = new ColorModel();
 }
 
 AppState::~AppState() {
   delete m_parser;
   delete m_sentences;
+  delete m_colors;
 }
 
-NLPSentenceModel* AppState::sentences() const {
+NLPAnalysisModel* AppState::analysis() const {
   return m_sentences;
+}
+
+ColorModel* AppState::colors() const {
+  return m_colors;
 }
 
 QString AppState::corpus() const {
@@ -38,10 +44,10 @@ void AppState::loadFile(const QString& filename) {
     m_sentences = nullptr;
   }
 
-  m_sentences = new NLPSentenceModel(this);
+  m_sentences = new NLPAnalysisModel(this);
   sentence::const_iterator word;
   for (list<freeling::sentence>::iterator is = sentences.begin(); is != sentences.end(); is++) {
-    NLPSentenceModel nlpsentence;
+    NLPAnalysisModel nlpsentence;
     for (word = is->begin(); word != is->end(); word++) {
       NLPWord nlpword;
       nlpword.parseWord(*word);
@@ -50,7 +56,7 @@ void AppState::loadFile(const QString& filename) {
   }
 
   file.close();
-  Q_EMIT sentencesChanged();
+  Q_EMIT analysisChanged();
 }
 
 
