@@ -51,7 +51,6 @@ Window {
                     color: model.color
                 }
             }
-
         }
 
 
@@ -73,7 +72,7 @@ Window {
                     Rectangle {
                         width: 1
                         height: 10
-                        color: "black"
+                        color: AppState.colors.getColor(model.pos)
                     }
                 }
             }

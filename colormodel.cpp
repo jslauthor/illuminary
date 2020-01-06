@@ -32,8 +32,8 @@ ColorModel::~ColorModel() {
 
 }
 
-QColor ColorModel::getColor(NLPPartOfSpeech::POS pos) {
-  return m_pos_colors.at(pos);
+QColor ColorModel::getColor(int pos) {
+  return m_pos_colors.at(static_cast<NLPPartOfSpeech::POS>(pos));
 }
 
 void ColorModel::setColor(NLPPartOfSpeech::POS pos, QColor &color) {
@@ -47,14 +47,12 @@ int ColorModel::rowCount(const QModelIndex &parent) const {
 }
 
 QVariant ColorModel::data(const QModelIndex &index, int role) const {
-  qInfo("Index/role %d %d", index.row(), role);
   if (index.row() < 0 || index.row() >= m_pos.count())
       return QVariant();
 
   const NLPPartOfSpeech::POS &pos = m_pos[index.row()];
   if (role == ColorRole) {
     QColor c = m_pos_colors.at(pos);
-    qInfo("Color name %s",  c.name().toStdString().c_str());
     return c;
   } else if (role == POSRole) {
     return pos;
