@@ -20,6 +20,7 @@ class AppState : public QObject
   Q_PROPERTY(NLPAnalysisModel* analysis READ analysis NOTIFY analysisChanged)
   Q_PROPERTY(ColorModel* colors READ colors NOTIFY colorsChanged)
   Q_PROPERTY(QString corpus READ corpus WRITE setCorpus NOTIFY corpusChanged)
+  Q_PROPERTY(int averageWordLength READ averageWordLength NOTIFY analysisChanged)
 public:
   AppState();
   ~AppState() override;
@@ -31,14 +32,17 @@ public:
   QString corpus() const;
   void setCorpus(const QString&);
 
+  int averageWordLength() const;
+
 Q_SIGNALS:
   void analysisChanged();
   void corpusChanged();
   void colorsChanged();
 
 protected:
+  int m_averageWordLength;
   NLPParser *m_parser;
-  NLPAnalysisModel *m_sentences = nullptr;
+  NLPAnalysisModel *m_analysis = nullptr;
   ColorModel *m_colors = nullptr;
   QString m_corpus;
 };

@@ -8,12 +8,12 @@ AppState::AppState()
 
 AppState::~AppState() {
   delete m_parser;
-  delete m_sentences;
+  delete m_analysis;
   delete m_colors;
 }
 
 NLPAnalysisModel* AppState::analysis() const {
-  return m_sentences;
+  return m_analysis;
 }
 
 ColorModel* AppState::colors() const {
@@ -29,6 +29,11 @@ void AppState::setCorpus(const QString &corpus) {
   Q_EMIT corpusChanged();
 }
 
+int AppState::averageWordLength() const
+{
+  return m_averageWordLength;
+}
+
 void AppState::loadFile(const QString& filename) {
   QFile file(QUrl(filename).toLocalFile());
   if (!file.open(QIODevice::ReadOnly)) {
@@ -39,22 +44,24 @@ void AppState::loadFile(const QString& filename) {
 
   list<freeling::sentence> sentences = m_parser->parse(m_corpus.toStdWString());
 
-  if (m_sentences) {
-    delete m_sentences;
-    m_sentences = nullptr;
+  if (m_analysis) {
+    delete m_analysis;
+    m_analysis = nullptr;
   }
 
-  m_sentences = new NLPAnalysisModel(this);
+  m_analysis = new NLPAnalysisModel(this);
   sentence::const_iterator word;
+  qreal runningWordLength = 0;
   for (list<freeling::sentence>::iterator is = sentences.begin(); is != sentences.end(); is++) {
-    NLPAnalysisModel nlpsentence;
     for (word = is->begin(); word != is->end(); word++) {
       NLPWord nlpword;
       nlpword.parseWord(*word);
-      m_sentences->addWord(nlpword);
+      m_analysis->addWord(nlpword);
+      runningWordLength += nlpword.word().length();
     }
   }
 
+  m_averageWordLength = static_cast<int>(runningWordLength / m_analysis->rowCount());
   file.close();
   Q_EMIT analysisChanged();
 }

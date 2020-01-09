@@ -53,30 +53,45 @@ Window {
             }
         }
 
-
-        ColumnLayout {
-            Layout.alignment: Qt.AlignCenter
+        ScrollView{
+            id: scrollView
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Text {
-                Layout.fillWidth: true
-                text: AppState.corpus
-                wrapMode: Text.Wrap
-            }
-            Flow {
-                Layout.fillWidth: true
-                Layout.margins: 20
-                spacing: 1
-                Repeater {
-                    model: AppState.analysis
-                    Rectangle {
-                        width: 1
-                        height: 10
-                        color: AppState.colors.getColor(model.pos)
+            Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.interactive: true
+            clip: true
+            Column {
+                Text {
+                    width: scrollView.width
+                    text: AppState.corpus
+                    wrapMode: Text.Wrap
+                }
+                Flow {
+                    width: scrollView.width
+                    Layout.margins: 20
+                    spacing: 0
+                    Repeater {
+                        model: AppState.analysis
+                        RowLayout {
+                            height: 30
+                            width: 1
+                            // Length shouldn't apply to punctuation
+                            // Logarithmic height
+                            // Special character for periods
+                            Rectangle {
+                                Layout.alignment: Qt.AlignCenter
+                                width: parent.width
+                                height: Math.min(parent.height * (model.word.length / AppState.averageWordLength), parent.height)
+                                color: AppState.colors.getColor(model.pos)
+                            }
+                        }
                     }
                 }
             }
         }
+
+
     }
 
 }
