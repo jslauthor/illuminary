@@ -34,6 +34,12 @@ Window {
 
     RowLayout {
         anchors.fill: parent
+
+        ProgressBar {
+            visible: AppState.analysisProgress != 0.0 && AppState.analysisProgress != 1.0
+            value: AppState.analysisProgress
+        }
+
         ColumnLayout {
             Layout.alignment: Qt.AlignTop
             Layout.fillHeight: true

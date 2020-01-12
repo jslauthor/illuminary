@@ -16,6 +16,7 @@ SOURCES += main.cpp \
   appstate.cpp \
   colormodel.cpp \
   nlpanalysismodel.cpp \
+  nlpanalysisthread.cpp \
   nlpparser.cpp \
   nlpword.cpp
 
@@ -36,6 +37,7 @@ HEADERS += \
   appstate.h \
   colormodel.h \
   nlpanalysismodel.h \
+  nlpanalysisthread.h \
   nlpparser.h \
   nlpword.h
 

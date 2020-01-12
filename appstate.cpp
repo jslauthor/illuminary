@@ -2,14 +2,18 @@
 
 AppState::AppState()
 {
-  m_parser = new NLPParser();
   m_colors = new ColorModel();
+  m_analysisThread = new NLPAnalysisThread();
+
+  QObject::connect(m_analysisThread, SIGNAL(progressUpdate(qreal)), this, SLOT(onAnaylsisProgress(qreal)));
+  QObject::connect(m_analysisThread, SIGNAL(analysisComplete(CompletedAnalysis)), this, SLOT(onAnaylsisComplete(CompletedAnalysis)));
 }
 
+
 AppState::~AppState() {
-  delete m_parser;
   delete m_analysis;
   delete m_colors;
+  delete m_analysisThread;
 }
 
 NLPAnalysisModel* AppState::analysis() const {
@@ -34,36 +38,49 @@ int AppState::averageWordLength() const
   return m_averageWordLength;
 }
 
-void AppState::loadFile(const QString& filename) {
-  QFile file(QUrl(filename).toLocalFile());
-  if (!file.open(QIODevice::ReadOnly)) {
-    qWarning("%s", file.errorString().toStdString().c_str());
-  }
-  QTextStream in(&file);
-  setCorpus(in.readAll());
+qreal AppState::analysisProgress() const
+{
+  return m_analysisProgress;
+}
 
-  list<freeling::sentence> sentences = m_parser->parse(m_corpus.toStdWString());
+void AppState::setAnalysisProgress(const qreal &analysisProgress)
+{
+  m_analysisProgress = std::clamp(analysisProgress, 0.0, 100.0);
+  Q_EMIT analysisProgressChanged();
+}
 
-  if (m_analysis) {
-    delete m_analysis;
-    m_analysis = nullptr;
-  }
+void AppState::onAnaylsisProgress(qreal progress)
+{
+  setAnalysisProgress(progress);
+}
 
-  m_analysis = new NLPAnalysisModel(this);
-  sentence::const_iterator word;
-  qreal runningWordLength = 0;
-  for (list<freeling::sentence>::iterator is = sentences.begin(); is != sentences.end(); is++) {
-    for (word = is->begin(); word != is->end(); word++) {
-      NLPWord nlpword;
-      nlpword.parseWord(*word);
-      m_analysis->addWord(nlpword);
-      runningWordLength += nlpword.word().length();
+void AppState::onAnaylsisComplete(CompletedAnalysis analysis)
+{
+    if (m_analysis) {
+      delete m_analysis;
+      m_analysis = nullptr;
     }
-  }
 
-  m_averageWordLength = static_cast<int>(runningWordLength / m_analysis->rowCount());
-  file.close();
-  Q_EMIT analysisChanged();
+    m_analysis = &analysis.model;
+    m_averageWordLength = analysis.averageWordLength;
+
+    Q_EMIT analysisChanged();
+}
+
+void AppState::loadFile(const QString& filename) {
+  if (!m_analysisThread->isRunning()) {
+    QFile file(QUrl(filename).toLocalFile());
+    if (!file.open(QIODevice::ReadOnly)) {
+      qWarning("%s", file.errorString().toStdString().c_str());
+    }
+    QTextStream in(&file);
+    setCorpus(in.readAll());
+
+    m_analysisThread->setDocument(m_corpus.toStdWString());
+    m_analysisThread->start();
+
+    file.close();
+  }
 }
 
 
