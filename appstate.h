@@ -22,6 +22,7 @@ class AppState : public QObject
   Q_PROPERTY(QString corpus READ corpus WRITE setCorpus NOTIFY corpusChanged)
   Q_PROPERTY(int averageWordLength READ averageWordLength NOTIFY analysisChanged)
   Q_PROPERTY(qreal analysisProgress READ analysisProgress WRITE setAnalysisProgress NOTIFY analysisProgressChanged)
+  Q_PROPERTY(bool isAnalysisRunning READ isAnalysisRunning NOTIFY analysisRunningChanged)
 public:
   AppState();
   ~AppState() override;
@@ -33,6 +34,7 @@ public:
   QString corpus() const;
   void setCorpus(const QString&);
 
+  bool isAnalysisRunning();
   int averageWordLength() const;
 
   qreal analysisProgress() const;
@@ -43,9 +45,11 @@ Q_SIGNALS:
   void corpusChanged();
   void colorsChanged();
   void analysisProgressChanged();
+  void analysisRunningChanged();
 
 public Q_SLOTS:
-  void onAnaylsisProgress(qreal);
+  void onAnalysisProgress(qreal);
+  void onAnalysisStarted();
   void onAnaylsisComplete(CompletedAnalysis);
 
 protected:
@@ -55,6 +59,7 @@ protected:
   QString m_corpus;
 
   qreal m_analysisProgress = 0.0;
+  bool m_isAnalysisRunning = false;
 
   NLPAnalysisThread *m_analysisThread;
 };

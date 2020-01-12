@@ -5,13 +5,16 @@ AppState::AppState()
   m_colors = new ColorModel();
   m_analysisThread = new NLPAnalysisThread();
 
-  QObject::connect(m_analysisThread, SIGNAL(progressUpdate(qreal)), this, SLOT(onAnaylsisProgress(qreal)));
+  QObject::connect(m_analysisThread, SIGNAL(progressUpdate(qreal)), this, SLOT(onAnalysisProgress(qreal)));
+  QObject::connect(m_analysisThread, SIGNAL(analysisStarted()), this, SLOT(onAnalysisStarted()));
   QObject::connect(m_analysisThread, SIGNAL(analysisComplete(CompletedAnalysis)), this, SLOT(onAnaylsisComplete(CompletedAnalysis)));
 }
 
 
 AppState::~AppState() {
-  delete m_analysis;
+  if (m_analysis) {
+    delete m_analysis;
+  }
   delete m_colors;
   delete m_analysisThread;
 }
@@ -33,6 +36,11 @@ void AppState::setCorpus(const QString &corpus) {
   Q_EMIT corpusChanged();
 }
 
+bool AppState::isAnalysisRunning()
+{
+  return m_isAnalysisRunning;
+}
+
 int AppState::averageWordLength() const
 {
   return m_averageWordLength;
@@ -49,9 +57,14 @@ void AppState::setAnalysisProgress(const qreal &analysisProgress)
   Q_EMIT analysisProgressChanged();
 }
 
-void AppState::onAnaylsisProgress(qreal progress)
+void AppState::onAnalysisProgress(qreal progress)
 {
   setAnalysisProgress(progress);
+}
+
+void AppState::onAnalysisStarted() {
+  m_isAnalysisRunning = true;
+  Q_EMIT analysisRunningChanged();
 }
 
 void AppState::onAnaylsisComplete(CompletedAnalysis analysis)
@@ -65,10 +78,13 @@ void AppState::onAnaylsisComplete(CompletedAnalysis analysis)
     m_averageWordLength = analysis.averageWordLength;
 
     Q_EMIT analysisChanged();
+
+    m_isAnalysisRunning = false;
+    Q_EMIT analysisRunningChanged();
 }
 
 void AppState::loadFile(const QString& filename) {
-  if (!m_analysisThread->isRunning()) {
+  if (!m_isAnalysisRunning) {
     QFile file(QUrl(filename).toLocalFile());
     if (!file.open(QIODevice::ReadOnly)) {
       qWarning("%s", file.errorString().toStdString().c_str());

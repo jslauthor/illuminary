@@ -11,6 +11,7 @@ NLPAnalysisThread::~NLPAnalysisThread() {
 
 void NLPAnalysisThread::run()
 {
+  Q_EMIT analysisStarted();
   Q_EMIT progressUpdate(0.0);
 
   list<freeling::sentence> sentences = m_parser->parse(m_document);

@@ -30,6 +30,7 @@ public:
 
 Q_SIGNALS:
   void progressUpdate(qreal);
+  void analysisStarted();
   void analysisComplete(CompletedAnalysis);
 
 private:

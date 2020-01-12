@@ -35,11 +35,6 @@ Window {
     RowLayout {
         anchors.fill: parent
 
-        ProgressBar {
-            visible: AppState.analysisProgress != 0.0 && AppState.analysisProgress != 1.0
-            value: AppState.analysisProgress
-        }
-
         ColumnLayout {
             Layout.alignment: Qt.AlignTop
             Layout.fillHeight: true
@@ -59,6 +54,12 @@ Window {
             }
         }
 
+        ProgressBar {
+            visible: AppState.isAnalysisRunning
+            value: AppState.analysisProgress
+            indeterminate: true
+        }
+
         ScrollView{
             id: scrollView
             Layout.fillHeight: true
@@ -67,12 +68,13 @@ Window {
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.interactive: true
             clip: true
+            visible: !AppState.isAnalysisRunning
             Column {
-                Text {
-                    width: scrollView.width
-                    text: AppState.corpus
-                    wrapMode: Text.Wrap
-                }
+//                Text {
+//                    width: scrollView.width
+//                    text: AppState.corpus
+//                    wrapMode: Text.Wrap
+//                }
                 Flow {
                     width: scrollView.width
                     Layout.margins: 20

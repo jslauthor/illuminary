@@ -57,14 +57,22 @@ list<sentence> NLPParser::parse(wstring const &text) {
   list<sentence> ls;
 
   sid = sp->open_session();
-
+  qInfo("tokenize start");
   lw = tk->tokenize(text);
+  qInfo("tokenize done, split start");
   ls = sp->split(sid, lw, false);
+  qInfo("split done, morfo start");
   morfo->analyze(ls);
+  qInfo("morfo done, tagger start");
   tagger->analyze(ls);
+  qInfo("tagger done, parser start");
   parser->analyze(ls);
+  qInfo("parser done, dep start");
   dep->analyze(ls);
-  np->analyze(ls);
+  // Hm, this library seems to struggle with noun analysis (crashes)
+//  qInfo("dep done, noun start");
+//  np->analyze(ls);
+  qInfo("done!");
 
   sp->close_session(sid);
 
