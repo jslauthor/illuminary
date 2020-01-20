@@ -19,10 +19,13 @@ QVariant NLPAnalysisModel::data(const QModelIndex &index, int role) const {
       return QVariant();
 
   const NLPWord &word = m_words[index.row()];
+
   if (role == WordRole)
       return word.word();
   else if (role == POSRole)
       return word.pos();
+  else if (role == WordLengthInSentenceRole)
+      return word.averageWordLengthInSentence;
 
   return QVariant();
 }
@@ -37,6 +40,7 @@ QHash<int, QByteArray> NLPAnalysisModel::roleNames() const {
   QHash<int, QByteArray> roles;
   roles[WordRole] = "word";
   roles[POSRole] = "pos";
+  roles[WordLengthInSentenceRole] = "averageLengthInSentence";
   return roles;
 }
 

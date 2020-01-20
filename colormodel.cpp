@@ -33,7 +33,10 @@ ColorModel::~ColorModel() {
 }
 
 QColor ColorModel::getColor(int pos) {
-  return m_pos_colors.at(static_cast<NLPPartOfSpeech::POS>(pos));
+  if (m_pos_colors.count(static_cast<NLPPartOfSpeech::POS>(pos)) > 0) {
+      return m_pos_colors.at(static_cast<NLPPartOfSpeech::POS>(pos));
+  }
+  return m_pos_colors[NLPPartOfSpeech::POS::Unknown];
 }
 
 void ColorModel::setColor(NLPPartOfSpeech::POS pos, QColor &color) {

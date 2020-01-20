@@ -81,18 +81,10 @@ Window {
                     spacing: 0
                     Repeater {
                         model: AppState.analysis
-                        RowLayout {
-                            height: 30
-                            width: 1
-                            // Length shouldn't apply to punctuation
-                            // Logarithmic height
-                            // Special character for periods
-                            Rectangle {
-                                Layout.alignment: Qt.AlignCenter
-                                width: parent.width
-                                height: Math.min(parent.height * (model.word.length / AppState.averageWordLength), parent.height)
-                                color: AppState.colors.getColor(model.pos)
-                            }
+                        Word {
+                            height: 20
+                            relativeSize: model.word.length / model.averageLengthInSentence
+                            color: AppState.colors.getColor(model.pos)
                         }
                     }
                 }

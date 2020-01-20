@@ -22,12 +22,26 @@ void NLPAnalysisThread::run()
 
   for (list<freeling::sentence>::iterator is = sentences.begin(); is != sentences.end(); is++) {
     Q_EMIT progressUpdate(static_cast<double>(std::distance(sentences.begin(), is)) / sentences.size());
+    qreal runningWordLengthInSentence = 0;
+    std::vector<freeling::word> words;
 
+    qreal sentenceSize = 0.0;
     for (word = is->begin(); word != is->end(); word++) {
+      words.push_back(*word);
+      if (QString::fromStdWString(word->get_tag()).at(0) != "F") {
+        runningWordLengthInSentence += word->get_form().size();
+        runningWordLength += word->get_form().size();
+        sentenceSize++;
+      }
+    }
+
+    qreal avgWordLengthInSentence = runningWordLengthInSentence / sentenceSize;
+
+    for (auto w : words) {
       NLPWord nlpword;
-      nlpword.parseWord(*word);
+      nlpword.parseWord(w);
+      nlpword.averageWordLengthInSentence = avgWordLengthInSentence;
       runningAnalysis.model.addWord(nlpword);
-      runningWordLength += nlpword.word().length();
     }
   }
 

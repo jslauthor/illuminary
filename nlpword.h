@@ -28,7 +28,31 @@ public:
     Determiner,
     Interjection,
     Article,
-    Punctuation,
+
+    // Punctuation
+    Colon,
+    Comma,
+    CurlyOpen,
+    CurlyClose,
+    Etc,
+    ExclamationMarkOpen,
+    ExclamationMarkClosed,
+    Hyphen,
+    Other,
+    ParenthesisOpen,
+    ParenthesisClosed,
+    Percentage,
+    Period,
+    QuestionMarkOpen,
+    QuestionMarkClosed,
+    Quotation,
+    QuotationOpen,
+    QuotationClosed,
+    Semicolon,
+    Slash,
+    SquareOpen,
+    SquareClosed,
+
     Number,
     Date,
     Unknown
@@ -47,6 +71,7 @@ public:
     m_pos = other.m_pos;
     m_word = other.m_word;
     m_form = other.m_form;
+    averageWordLengthInSentence = other.averageWordLengthInSentence;
   }
 
   NLPPartOfSpeech::POS pos() const;
@@ -54,12 +79,19 @@ public:
 
   void parseWord(const freeling::word word); // create copy parse and store it
 
+  freeling::sentence getSentence() const;
+  void setSentence(const freeling::sentence &sentence);
+
+  qreal averageWordLengthInSentence = 0.0;
+
 Q_SIGNALS:
 
 protected:
   NLPPartOfSpeech::POS m_pos;
   QString m_form;
   freeling::word m_word;
+  freeling::sentence m_sentence;
+
   static PartOfSpeechMapping m_posMap;
 };
 
@@ -122,13 +154,34 @@ public:
     m_mapStringValues[L"VBD"] = NLPPartOfSpeech::POS::Verb; // past
     m_mapStringValues[L"VBP"] = NLPPartOfSpeech::POS::Verb; // personal
     m_mapStringValues[L"VBZ"] = NLPPartOfSpeech::POS::Verb; // personal person
+    // Punctuation
+    m_mapStringValues[L"Fd"] = NLPPartOfSpeech::POS::Colon;
+    m_mapStringValues[L"Fc"] = NLPPartOfSpeech::POS::Comma;
+    m_mapStringValues[L"Flt"] = NLPPartOfSpeech::POS::CurlyClose;
+    m_mapStringValues[L"Fla"] = NLPPartOfSpeech::POS::CurlyOpen;
+    m_mapStringValues[L"Fs"] = NLPPartOfSpeech::POS::Etc;
+    m_mapStringValues[L"Fat"] = NLPPartOfSpeech::POS::ExclamationMarkClosed;
+    m_mapStringValues[L"Faa"] = NLPPartOfSpeech::POS::ExclamationMarkOpen;
+    m_mapStringValues[L"Fg"] = NLPPartOfSpeech::POS::Hyphen;
+    m_mapStringValues[L"Fz"] = NLPPartOfSpeech::POS::Other;
+    m_mapStringValues[L"Fpt"] = NLPPartOfSpeech::POS::ParenthesisClosed;
+    m_mapStringValues[L"Fpa"] = NLPPartOfSpeech::POS::ParenthesisOpen;
+    m_mapStringValues[L"Ft"] = NLPPartOfSpeech::POS::Percentage;
+    m_mapStringValues[L"Fp"] = NLPPartOfSpeech::POS::Period;
+    m_mapStringValues[L"Fit"] = NLPPartOfSpeech::POS::QuestionMarkClosed;
+    m_mapStringValues[L"Fia"] = NLPPartOfSpeech::POS::QuestionMarkOpen;
+    m_mapStringValues[L"Fe"] = NLPPartOfSpeech::POS::Quotation;
+    m_mapStringValues[L"Frc"] = NLPPartOfSpeech::POS::QuotationClosed;
+    m_mapStringValues[L"Fra"] = NLPPartOfSpeech::POS::QuotationOpen;
+    m_mapStringValues[L"Fx"] = NLPPartOfSpeech::POS::Semicolon;
+    m_mapStringValues[L"Fh"] = NLPPartOfSpeech::POS::Slash;
+    m_mapStringValues[L"Fct"] = NLPPartOfSpeech::POS::SquareClosed;
+    m_mapStringValues[L"Fca"] = NLPPartOfSpeech::POS::SquareOpen;
   }
 
   NLPPartOfSpeech::POS getMapping(const std::wstring &pos) {
-    if (m_mapStringValues.count(pos)) {
-      return m_mapStringValues[pos];
-    } else if (std::wcscmp(&pos.at(0), L"F") == 0) {
-      return NLPPartOfSpeech::POS::Punctuation;
+    if (m_mapStringValues.count(pos) > 0) {
+      return m_mapStringValues.at(pos);
     }
     return NLPPartOfSpeech::POS::Unknown;
   }

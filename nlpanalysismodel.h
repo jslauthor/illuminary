@@ -12,7 +12,8 @@ class NLPAnalysisModel : public QAbstractListModel
 public:
   enum NLPWordRoles {
     WordRole = Qt::UserRole + 1,
-    POSRole
+    POSRole,
+    WordLengthInSentenceRole
   };
 
   explicit NLPAnalysisModel(QObject *parent = nullptr);
