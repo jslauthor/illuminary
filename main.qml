@@ -67,19 +67,53 @@ Window {
                 Layout.fillWidth: true
                 ColumnLayout {
                     anchors.fill: parent
-                    Slider {
+                    RowLayout {
                         Layout.fillWidth: true
-                        from: 1
-                        value: VisualizationProperties.wordWidth
-                        to: 100
-                        onMoved: VisualizationProperties.wordWidth = value
+                        Text {
+                            text: "Width"
+                        }
+                        Slider {
+                            Layout.fillWidth: true
+                            from: 1
+                            value: VisualizationProperties.wordWidth
+                            to: 100
+                            onMoved: VisualizationProperties.wordWidth = value
+                        }
+                        Text {
+                            text: VisualizationProperties.wordWidth
+                        }
                     }
-                    Slider {
+                    RowLayout {
                         Layout.fillWidth: true
-                        from: 1
-                        value: VisualizationProperties.wordHeight
-                        to: 100
-                        onMoved: VisualizationProperties.wordHeight = value
+                        Text {
+                            text: "Height"
+                        }
+                        Slider {
+                            Layout.fillWidth: true
+                            from: 1
+                            value: VisualizationProperties.wordHeight
+                            to: 100
+                            onMoved: VisualizationProperties.wordHeight = value
+                        }
+                        Text {
+                            text: VisualizationProperties.wordHeight
+                        }
+                    }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Text {
+                            text: "Word Paddding"
+                        }
+                        Slider {
+                            Layout.fillWidth: true
+                            from: 0
+                            value: VisualizationProperties.wordPadding
+                            to: 10
+                            onMoved: VisualizationProperties.wordPadding = value
+                        }
+                        Text {
+                            text: VisualizationProperties.wordPadding
+                        }
                     }
                 }
             }
@@ -109,7 +143,8 @@ Window {
                 Flow {
                     width: scrollView.width
                     Layout.margins: 20
-                    spacing: 0
+                    spacing: VisualizationProperties.wordPadding
+                    layer.enabled: true
                     Repeater {
                         model: AppState.analysis
                         Word {
