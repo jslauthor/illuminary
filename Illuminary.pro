@@ -18,7 +18,8 @@ SOURCES += main.cpp \
   nlpanalysismodel.cpp \
   nlpanalysisthread.cpp \
   nlpparser.cpp \
-  nlpword.cpp
+  nlpword.cpp \
+  visualizationproperties.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,7 +40,8 @@ HEADERS += \
   nlpanalysismodel.h \
   nlpanalysisthread.h \
   nlpparser.h \
-  nlpword.h
+  nlpword.h \
+  visualizationproperties.h
 
 INCLUDEPATH += /usr/local/include/boost_1_71_0/include/ \
   /usr/local/opt/icu4c/include \

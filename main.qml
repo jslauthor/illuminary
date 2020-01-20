@@ -38,18 +38,49 @@ Window {
         ColumnLayout {
             Layout.alignment: Qt.AlignTop
             Layout.fillHeight: true
+            Layout.maximumWidth: 200
             Button {
                 Layout.alignment: Qt.AlignTop
                 text: "Select document"
                 onClicked: fileDialog.open()
             }
 
-            Repeater {
-                model: AppState.colors
-                Rectangle {
-                    width: 20
-                    height: 20
-                    color: model.color
+            GroupBox {
+                title: qsTr("Part of Speech Colors")
+                Layout.fillWidth: true
+                ColumnLayout {
+                    anchors.fill: parent
+                    Repeater {
+                        model: AppState.colors
+                        Rectangle {
+                            width: 20
+                            height: 20
+                            color: model.color
+                        }
+                    }
+
+                }
+            }
+
+            GroupBox {
+                title: qsTr("Word Dimensions")
+                Layout.fillWidth: true
+                ColumnLayout {
+                    anchors.fill: parent
+                    Slider {
+                        Layout.fillWidth: true
+                        from: 1
+                        value: VisualizationProperties.wordWidth
+                        to: 100
+                        onMoved: VisualizationProperties.wordWidth = value
+                    }
+                    Slider {
+                        Layout.fillWidth: true
+                        from: 1
+                        value: VisualizationProperties.wordHeight
+                        to: 100
+                        onMoved: VisualizationProperties.wordHeight = value
+                    }
                 }
             }
         }
@@ -82,7 +113,8 @@ Window {
                     Repeater {
                         model: AppState.analysis
                         Word {
-                            height: 20
+                            averageWidth: VisualizationProperties.wordWidth
+                            height: VisualizationProperties.wordHeight
                             relativeSize: model.word.length / model.averageLengthInSentence
                             color: AppState.colors.getColor(model.pos)
                         }

@@ -84,8 +84,8 @@ void AppState::onAnaylsisComplete(CompletedAnalysis analysis)
 }
 
 void AppState::loadFile(const QString& filename) {
-  if (!m_isAnalysisRunning) {
-    QFile file(QUrl(filename).toLocalFile());
+    if (!m_isAnalysisRunning) {
+        QFile file(QUrl(filename).toLocalFile());
     if (!file.open(QIODevice::ReadOnly)) {
       qWarning("%s", file.errorString().toStdString().c_str());
     }

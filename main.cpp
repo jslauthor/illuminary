@@ -7,6 +7,7 @@
 #include "nlpanalysismodel.h"
 #include "nlpword.h"
 #include "nlpanalysisthread.h"
+#include "visualizationproperties.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +16,9 @@ int main(int argc, char *argv[])
 
   qRegisterMetaType<CompletedAnalysis>();
   qmlRegisterUncreatableType<NLPPartOfSpeech>("NLP", 1,0, "PartOfSpeech", "Not creatable - for enums only");
+
   AppState appState;
+  VisualizationProperties visualizationProperties;
 
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
@@ -27,6 +30,7 @@ int main(int argc, char *argv[])
   }, Qt::QueuedConnection);
 
   engine.rootContext()->setContextProperty("AppState", &appState);
+  engine.rootContext()->setContextProperty("VisualizationProperties", &visualizationProperties);
   engine.load(url);
 
   return app.exec();
