@@ -26,6 +26,10 @@ QVariant NLPAnalysisModel::data(const QModelIndex &index, int role) const {
       return word.pos();
   else if (role == WordLengthInSentenceRole)
       return word.averageWordLengthInSentence;
+  else if (role == EndOfSentenceRole)
+      return word.getEndOfSentence();
+  else if (role == EndOfParagraphRole)
+      return word.getEndOfParagraph();
 
   return QVariant();
 }
@@ -41,6 +45,8 @@ QHash<int, QByteArray> NLPAnalysisModel::roleNames() const {
   roles[WordRole] = "word";
   roles[POSRole] = "pos";
   roles[WordLengthInSentenceRole] = "averageLengthInSentence";
+  roles[EndOfSentenceRole] = "isEndOfSentence";
+  roles[EndOfParagraphRole] = "isEndOfParagraph";
   return roles;
 }
 

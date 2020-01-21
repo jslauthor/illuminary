@@ -28,6 +28,7 @@ void NLPAnalysisThread::run()
     qreal sentenceSize = 0.0;
     for (word = is->begin(); word != is->end(); word++) {
       words.push_back(*word);
+      // All punctuation starts with "F" -- don't include in average length
       if (QString::fromStdWString(word->get_tag()).at(0) != "F") {
         runningWordLengthInSentence += word->get_form().size();
         runningWordLength += word->get_form().size();
@@ -39,7 +40,24 @@ void NLPAnalysisThread::run()
 
     for (auto w : words) {
       NLPWord nlpword;
+
+      // I'm not entirely proud of this code. This looks to see if there are
+      // is a newline character, which denotes the end of a paragraph
+      QString substring = QString::fromStdWString(m_document.substr(w.get_span_start() + w.get_form().length(), 10));
+      for (QString::iterator c = substring.begin(); c != substring.end(); ++c) {
+        if (*c == "\n") {
+          nlpword.setEndOfParagraph(true);
+          break;
+        }
+        // Anything but a space is okay
+        if (*c != " ") {
+          break;
+        }
+      }
+
       nlpword.parseWord(w);
+      nlpword.setSentence(*is);
+      nlpword.setEndOfSentence(w.get_position() == is->size()-1);
       nlpword.averageWordLengthInSentence = avgWordLengthInSentence;
       runningAnalysis.model.addWord(nlpword);
     }

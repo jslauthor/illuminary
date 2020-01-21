@@ -71,6 +71,8 @@ public:
     m_pos = other.m_pos;
     m_word = other.m_word;
     m_form = other.m_form;
+    m_endOfSentence = other.m_endOfSentence;
+    m_endOfParagraph = other.m_endOfParagraph;
     averageWordLengthInSentence = other.averageWordLengthInSentence;
   }
 
@@ -84,11 +86,21 @@ public:
 
   qreal averageWordLengthInSentence = 0.0;
 
+  bool getEndOfSentence() const;
+  void setEndOfSentence(bool endOfSentence);
+
+  bool getEndOfParagraph() const;
+  void setEndOfParagraph(bool endOfParagraph);
+
 Q_SIGNALS:
 
 protected:
   NLPPartOfSpeech::POS m_pos;
   QString m_form;
+
+  bool m_endOfSentence = false;
+  bool m_endOfParagraph = false;
+
   freeling::word m_word;
   freeling::sentence m_sentence;
 

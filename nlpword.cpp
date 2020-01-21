@@ -30,3 +30,23 @@ void NLPWord::setSentence(const freeling::sentence &sentence)
 {
   m_sentence = sentence;
 }
+
+bool NLPWord::getEndOfSentence() const
+{
+  return m_endOfSentence;
+}
+
+void NLPWord::setEndOfSentence(bool endOfSentence)
+{
+  m_endOfSentence = endOfSentence;
+}
+
+bool NLPWord::getEndOfParagraph() const
+{
+  return m_endOfParagraph;
+}
+
+void NLPWord::setEndOfParagraph(bool endOfParagraph)
+{
+  m_endOfParagraph = endOfParagraph;
+}

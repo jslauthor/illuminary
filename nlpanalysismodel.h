@@ -13,7 +13,9 @@ public:
   enum NLPWordRoles {
     WordRole = Qt::UserRole + 1,
     POSRole,
-    WordLengthInSentenceRole
+    WordLengthInSentenceRole,
+    EndOfSentenceRole,
+    EndOfParagraphRole
   };
 
   explicit NLPAnalysisModel(QObject *parent = nullptr);

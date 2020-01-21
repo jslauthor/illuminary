@@ -115,6 +115,22 @@ Window {
                             text: VisualizationProperties.wordPadding
                         }
                     }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Text {
+                            text: "Sent Paddding"
+                        }
+                        Slider {
+                            Layout.fillWidth: true
+                            from: 0
+                            value: VisualizationProperties.sentencePadding
+                            to: 10
+                            onMoved: VisualizationProperties.sentencePadding = value
+                        }
+                        Text {
+                            text: VisualizationProperties.sentencePadding
+                        }
+                    }
                 }
             }
         }
@@ -125,7 +141,7 @@ Window {
             indeterminate: true
         }
 
-        ScrollView{
+        ScrollView {
             id: scrollView
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -152,6 +168,8 @@ Window {
                             height: VisualizationProperties.wordHeight
                             relativeSize: model.word.length / model.averageLengthInSentence
                             color: AppState.colors.getColor(model.pos)
+                            isEndOfSentence: model.isEndOfSentence
+                            sentencePadding: VisualizationProperties.sentencePadding
                         }
                     }
                 }
