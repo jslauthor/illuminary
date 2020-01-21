@@ -118,17 +118,33 @@ Window {
                     RowLayout {
                         Layout.fillWidth: true
                         Text {
-                            text: "Sent Paddding"
+                            text: "Sent Padding"
                         }
                         Slider {
                             Layout.fillWidth: true
                             from: 0
                             value: VisualizationProperties.sentencePadding
-                            to: 10
+                            to: 50
                             onMoved: VisualizationProperties.sentencePadding = value
                         }
                         Text {
                             text: VisualizationProperties.sentencePadding
+                        }
+                    }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Text {
+                            text: "Para Padding"
+                        }
+                        Slider {
+                            Layout.fillWidth: true
+                            from: 0
+                            value: VisualizationProperties.paragraphPadding
+                            to: 50
+                            onMoved: VisualizationProperties.paragraphPadding = value
+                        }
+                        Text {
+                            text: VisualizationProperties.paragraphPadding
                         }
                     }
                 }
@@ -151,6 +167,7 @@ Window {
             clip: true
             visible: !AppState.isAnalysisRunning
             Column {
+                id: visualizationContainer
 //                Text {
 //                    width: scrollView.width
 //                    text: AppState.corpus
@@ -163,13 +180,21 @@ Window {
                     layer.enabled: true
                     Repeater {
                         model: AppState.analysis
-                        Word {
-                            averageWidth: VisualizationProperties.wordWidth
-                            height: VisualizationProperties.wordHeight
-                            relativeSize: model.word.length / model.averageLengthInSentence
-                            color: AppState.colors.getColor(model.pos)
-                            isEndOfSentence: model.isEndOfSentence
-                            sentencePadding: VisualizationProperties.sentencePadding
+                        Column {
+                            Word {
+                                averageWidth: VisualizationProperties.wordWidth
+                                height: VisualizationProperties.wordHeight
+                                relativeSize: model.word.length / model.averageLengthInSentence
+                                color: AppState.colors.getColor(model.pos)
+                                isEndOfSentence: model.isEndOfSentence
+                                sentencePadding: VisualizationProperties.sentencePadding
+                                visible: !model.isEndOfParagraph
+                            }
+                            Rectangle {
+                                visible: model.isEndOfParagraph
+                                width: visualizationContainer.width
+                                height: VisualizationProperties.paragraphPadding
+                            }
                         }
                     }
                 }
