@@ -19,6 +19,10 @@ SOURCES += main.cpp \
   nlpanalysisthread.cpp \
   nlpparser.cpp \
   nlpword.cpp \
+  poet/List.cpp \
+  poet/StringMap.cpp \
+  poet/WordDatabase.cpp \
+  poet/WordFrequencyAnalyzer.cpp \
   visualizationproperties.cpp
 
 RESOURCES += qml.qrc
@@ -41,6 +45,11 @@ HEADERS += \
   nlpanalysisthread.h \
   nlpparser.h \
   nlpword.h \
+  poet/DynamicArray.h \
+  poet/List.h \
+  poet/StringMap.h \
+  poet/WordDatabase.h \
+  poet/WordFrequencyAnalyzer.h \
   visualizationproperties.h
 
 INCLUDEPATH += /usr/local/include/boost_1_71_0/include/ \
@@ -51,3 +60,14 @@ INCLUDEPATH += /usr/local/include/boost_1_71_0/include/ \
 QMAKE_LFLAGS += -L/usr/local/lib -lfreeling
 
 #LIBS =+
+
+#DISTFILES += \
+#  poet/dict.txt
+
+# Copy Ppoet phoneme dictionary to build Dir
+copydata.commands = $(COPY_FILE) $$PWD/poet/dict.txt $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata
+

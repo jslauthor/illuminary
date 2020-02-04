@@ -10,6 +10,8 @@
 #include "freeling.h"
 using namespace freeling;
 
+#include "poet/WordDatabase.h"
+
 // Add all of the metadata here
 struct CompletedAnalysis {
   NLPAnalysisModel model;
@@ -36,6 +38,7 @@ Q_SIGNALS:
 private:
   std::wstring m_document;
   NLPParser *m_parser;
+  WordDatabase *m_phoneme_parser;
 };
 
 #endif // NLPANALYSISTHREAD_H

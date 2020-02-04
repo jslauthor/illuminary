@@ -3,10 +3,16 @@
 NLPAnalysisThread::NLPAnalysisThread()
 {
   m_parser = new NLPParser();
+  m_phoneme_parser = new WordDatabase();
+
+  if ( !m_phoneme_parser->load("../../../dict.txt") ) {
+     qInfo("Error: Couldn't load dict.txt\n");
+  }
 }
 
 NLPAnalysisThread::~NLPAnalysisThread() {
   delete m_parser;
+  delete m_phoneme_parser;
 }
 
 void NLPAnalysisThread::run()
