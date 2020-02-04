@@ -59,6 +59,8 @@ QVariant ColorModel::data(const QModelIndex &index, int role) const {
     return c;
   } else if (role == POSRole) {
     return pos;
+  } else if (role == LabelRole) {
+    return NLPWord::pos_map.getLabel(pos);
   }
 
   return QVariant();
@@ -68,5 +70,6 @@ QHash<int, QByteArray> ColorModel::roleNames() const {
   QHash<int, QByteArray> roles;
   roles[ColorRole] = "color";
   roles[POSRole] = "pos";
+  roles[LabelRole] = "label";
   return roles;
 }

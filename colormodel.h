@@ -19,7 +19,8 @@ public:
 
   enum Roles {
     ColorRole = Qt::UserRole + 1,
-    POSRole
+    POSRole,
+    LabelRole
   };
 
   Q_INVOKABLE QColor getColor(int);
@@ -34,6 +35,7 @@ protected:
   QList<NLPPartOfSpeech::POS> m_pos;
   std::map<NLPPartOfSpeech::POS, QColor> m_pos_colors;
   QHash<int, QByteArray> roleNames() const override;
+  NLPWord m_word;
 };
 
 Q_DECLARE_METATYPE(ColorModel)

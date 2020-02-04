@@ -52,13 +52,17 @@ Window {
                     anchors.fill: parent
                     Repeater {
                         model: AppState.colors
-                        Rectangle {
-                            width: 20
-                            height: 20
-                            color: model.color
+                        RowLayout {
+                            Rectangle {
+                                width: 20
+                                height: 20
+                                color: model.color
+                            }
+                            Text {
+                                text: qsTr(model.label)
+                            }
                         }
                     }
-
                 }
             }
 

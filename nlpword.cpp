@@ -1,6 +1,6 @@
 #include "nlpword.h"
 
-PartOfSpeechMapping NLPWord::m_posMap;
+PartOfSpeechMapping NLPWord::pos_map;
 
 NLPWord::NLPWord()
 {
@@ -18,7 +18,7 @@ QString NLPWord::word() const {
 void NLPWord::parseWord(const freeling::word word) {
   m_word = word;
   m_form = QString::fromStdWString(word.get_form());
-  m_pos = NLPWord::m_posMap.getMapping(word.get_tag());
+  m_pos = NLPWord::pos_map.getMapping(word.get_tag());
 }
 
 freeling::sentence NLPWord::getSentence() const

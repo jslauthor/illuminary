@@ -92,6 +92,8 @@ public:
   bool getEndOfParagraph() const;
   void setEndOfParagraph(bool endOfParagraph);
 
+  static PartOfSpeechMapping pos_map;
+
 Q_SIGNALS:
 
 protected:
@@ -103,8 +105,6 @@ protected:
 
   freeling::word m_word;
   freeling::sentence m_sentence;
-
-  static PartOfSpeechMapping m_posMap;
 };
 
 
@@ -189,6 +189,39 @@ public:
     m_mapStringValues[L"Fh"] = NLPPartOfSpeech::POS::Slash;
     m_mapStringValues[L"Fct"] = NLPPartOfSpeech::POS::SquareClosed;
     m_mapStringValues[L"Fca"] = NLPPartOfSpeech::POS::SquareOpen;
+
+    m_mapLabelValues[NLPPartOfSpeech::POS::Adjective] = QString("Adjective");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Adposition] = QString("Postposition");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Adverb] = QString("Adverb");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Conjunction] = QString("Conjunction");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Determiner] = QString("Determiner");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Interjection] = QString("Interjection");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Noun] = QString("Noun");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Article] = QString("Article");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Preposition] = QString("Preposition");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Pronoun] = QString("Pronoun");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Verb] = QString("Verb");
+
+    m_mapLabelValues[NLPPartOfSpeech::POS::Colon] = QString("Colon");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Comma] = QString("Comma");
+    m_mapLabelValues[NLPPartOfSpeech::POS::CurlyClose] = QString("Curly Closed");
+    m_mapLabelValues[NLPPartOfSpeech::POS::CurlyOpen] = QString("Curly Open");
+    m_mapLabelValues[NLPPartOfSpeech::POS::ExclamationMarkClosed] = QString("Exclamation Mark Closed");
+    m_mapLabelValues[NLPPartOfSpeech::POS::ExclamationMarkOpen] = QString("Exclamation Mark Open");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Hyphen] = QString("Hyphen");
+    m_mapLabelValues[NLPPartOfSpeech::POS::ParenthesisClosed] = QString("Parenthesis Closed");
+    m_mapLabelValues[NLPPartOfSpeech::POS::ParenthesisOpen] = QString("Parenthesis Open");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Percentage] = QString("Percentage");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Period] = QString("Period");
+    m_mapLabelValues[NLPPartOfSpeech::POS::QuestionMarkClosed] = QString("Question Mark Closed");
+    m_mapLabelValues[NLPPartOfSpeech::POS::QuestionMarkOpen] = QString("Question Mark Open");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Quotation] = QString("Quotation");
+    m_mapLabelValues[NLPPartOfSpeech::POS::QuotationClosed] = QString("Quotation Closed");
+    m_mapLabelValues[NLPPartOfSpeech::POS::QuotationOpen] = QString("QuotationOpen");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Semicolon] = QString("Semicolon");
+    m_mapLabelValues[NLPPartOfSpeech::POS::Slash] = QString("Slash");
+    m_mapLabelValues[NLPPartOfSpeech::POS::SquareClosed] = QString("Square Closed");
+    m_mapLabelValues[NLPPartOfSpeech::POS::SquareOpen] = QString("Square Open");
   }
 
   NLPPartOfSpeech::POS getMapping(const std::wstring &pos) {
@@ -197,8 +230,17 @@ public:
     }
     return NLPPartOfSpeech::POS::Unknown;
   }
+
+  QString getLabel(const NLPPartOfSpeech::POS &pos) {
+    if (m_mapLabelValues.count(pos) > 0) {
+      return m_mapLabelValues.at(pos);
+    }
+    return QString("Unknown");
+  }
+
 private:
   std::map<std::wstring, NLPPartOfSpeech::POS> m_mapStringValues;
+  std::map<NLPPartOfSpeech::POS, QString> m_mapLabelValues;
 };
 
 #endif // NLPWORD_H
