@@ -193,7 +193,9 @@ Window {
                                 isEndOfSentence: model.isEndOfSentence
                                 sentencePadding: VisualizationProperties.sentencePadding
                                 visible: !model.isEndOfParagraph
+                                word: model.word
                             }
+                            // Creates the paragraph spacing (gross)
                             Rectangle {
                                 visible: model.isEndOfParagraph
                                 width: visualizationContainer.width
