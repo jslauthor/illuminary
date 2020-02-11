@@ -57,9 +57,27 @@ Window {
                                 width: 20
                                 height: 20
                                 color: model.color
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onPressed: {
+                                        colorDialog.open();
+                                    }
+                                }
                             }
                             Text {
                                 text: qsTr(model.label)
+                            }
+                            ColorDialog {
+                                id: colorDialog
+                                title: "Please choose a color"
+                                visible: false
+                                onAccepted: {
+                                    AppState.colors.setColor(Number(model.pos), colorDialog.color);
+                                    colorDialog.close();
+                                }
+                                onRejected: {
+                                    colorDialog.close();
+                                }
                             }
                         }
                     }

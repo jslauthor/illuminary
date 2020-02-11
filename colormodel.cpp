@@ -39,9 +39,9 @@ QColor ColorModel::getColor(int pos) {
   return m_pos_colors[NLPPartOfSpeech::POS::Unknown];
 }
 
-void ColorModel::setColor(NLPPartOfSpeech::POS pos, QColor &color) {
-  m_pos_colors[pos] = color;
-//  Q_EMIT colorChanged();
+void ColorModel::setColor(int pos, QColor color) {
+  m_pos_colors[static_cast<NLPPartOfSpeech::POS>(pos)] = color;
+  Q_EMIT dataChanged(index(pos), index(pos), QVector<int>{ColorRole});
 }
 
 int ColorModel::rowCount(const QModelIndex &parent) const {

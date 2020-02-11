@@ -39,9 +39,9 @@ Q_SIGNALS:
 protected:
   int m_wordWidth = 12;
   int m_wordHeight = 10;
-  int m_wordPadding = 0;
+  int m_wordPadding = 1;
   int m_sentencePadding = 5;
-  int m_paragraphPadding = 10;
+  int m_paragraphPadding = 0;
 };
 
 #endif // VISUALIZATIONPROPERTIES_H

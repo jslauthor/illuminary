@@ -24,7 +24,7 @@ public:
   };
 
   Q_INVOKABLE QColor getColor(int);
-  Q_INVOKABLE void setColor(NLPPartOfSpeech::POS, QColor&);
+  Q_INVOKABLE void setColor(int, QColor);
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const  override;
   QVariant data(const QModelIndex &index, int role) const override;
